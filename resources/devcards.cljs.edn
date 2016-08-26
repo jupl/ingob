@@ -1,0 +1,2 @@
+{:require [app.devcards]
+ :init-fns [app.devcards/init]}
