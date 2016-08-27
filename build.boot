@@ -11,6 +11,7 @@
                  [powerlaces/boot-cljs-devtools "0.1.1"     :scope "test"]
                  [pandeiro/boot-http            "0.7.3"     :scope "test"]
                  [tolitius/boot-check           "0.1.3"     :scope "test"]
+                 [camel-snake-kebab             "0.4.0"]
                  [org.clojure/clojurescript     "1.9.216"]
                  [re-frame                      "0.8.0"]
                  [reagent                       "0.6.0-rc"]])
@@ -38,7 +39,13 @@
   (comp
    (speak)
    (sift :include #{#"^devcards"} :invert true)
-   (cljs :optimizations :advanced
+   (cljs :ids #{"electron"}
+         :optimizations :simple
+         :optimize-constants true
+         :static-fns true
+         :compiler-options @closure-opts)
+   (cljs :ids #{"index"}
+         :optimizations :advanced
          :compiler-options @closure-opts)
    (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
    (target)))

@@ -1,6 +1,6 @@
 * Ingob
 ** About
-This is a template for creating and developing ClojureScript applications with [[https://reagent-project.github.io/][Reagent]] and [[https://github.com/Day8/re-frame][re-frame]].
+This is a template for creating and developing ClojureScript applications with [[https://reagent-project.github.io/][Reagent]] and [[https://github.com/Day8/re-frame][re-frame]] on [[http://electron.atom.io/][Electron]].
 ** Variants
 - [[https://github.com/jupl/ingob][Base]]
 ** Goals and Features
@@ -21,7 +21,7 @@ This is a template for creating and developing ClojureScript applications with [
 2. Clone/download this repository
 3. Run one of tasks defined below. If this is your first time using this dependencies will automatically be downloaded.
 4. View project structure and customize =build.boot= to fit your needs.
-For example, you can run ~boot dev~ to start the development environment. From there you can visit =http://localhost:3000= to view the current build and =http://localhost:3000/devcards.html= to view devcards.
+For example, you can run ~boot dev~ to start the development environment. From there you can switch to the =target/= directory and use [[https://github.com/electron-userland/electron-prebuilt][electron-prebuilt]] to start the application bu running ~electron .~.
 ** Project structure
 | Directories/files             | Description                                                         |
 |-------------------------------+---------------------------------------------------------------------|
