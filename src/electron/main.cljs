@@ -1,15 +1,18 @@
 (ns electron.main
-  (:require [core.config :as config]
+  (:require [cljs.nodejs :refer [enable-util-print! require]]
+            [core.config :as config]
             [electron.menu]
             [electron.window :refer [init-window]]))
 
 (def app
   "Electron application instance."
-  (-> "electron" js/require .-app))
+  (-> "electron" require .-app))
 
 (defn init
   "Configure and bootstrap Electron application."
   []
+  (when (identical? config/production false)
+    (enable-util-print!))
   (let [main-window (atom nil)
         open-main-window #(init-window main-window "index.html")]
     (.on app "ready" open-main-window)
