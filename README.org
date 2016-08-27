@@ -3,6 +3,7 @@
 This is a template for creating and developing ClojureScript applications with [[https://reagent-project.github.io/][Reagent]] and [[https://github.com/Day8/re-frame][re-frame]].
 ** Variants
 - [[https://github.com/jupl/ingob][Base]]
+- [[https://github.com/jupl/ingob/tree/electron][Electron]]
 ** Goals and Features
 - Baseline yet featureful environment for working with Reagent and re-frame
 - Use [[http://boot-clj.com/][Boot]] for easy extensibility and customization
