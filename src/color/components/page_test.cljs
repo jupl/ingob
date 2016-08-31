@@ -1,7 +1,9 @@
 (ns color.components.page-test
-(:require [cljs.test :refer-macros [is]]
-          [color.components.page :as color.page]
-          [devcards.core :refer-macros [defcard-rg deftest]]))
+  "Testing/devcards for color page UI component."
+  (:require
+   [cljs.test :refer-macros [is]]
+   [color.components.page :as color.page]
+   [devcards.core :refer-macros [defcard-rg deftest]]))
 
 (defcard-rg component
   "This is the `color/page` component."

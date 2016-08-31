@@ -1,6 +1,8 @@
 (ns color.components.page
-  (:require [color.db]
-            [re-frame.core :refer [dispatch subscribe]]))
+  "Color page UI component."
+  (:require
+   [color.db]
+   [re-frame.core :refer [dispatch subscribe]]))
 
 ;; ---------- Template
 

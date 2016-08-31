@@ -1,9 +1,11 @@
 (ns app.main
-  (:require [app.components.page :as app.page]
-            [core.config :as config]
-            [core.db :as db]
-            [core.reload :as reload]
-            [reagent.core :as reagent]))
+  "Entry point for main application."
+  (:require
+   [app.components.page :as app.page]
+   [core.config :as config]
+   [core.db :as db]
+   [core.reload :as reload]
+   [reagent.core :as reagent]))
 
 (def container-style
   "Style attributes applied to the CLJS application container"
