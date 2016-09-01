@@ -1,5 +1,7 @@
 (ns app.components.page
-  (:require [color.components.page :as color.page]))
+  "Top level UI component."
+  (:require
+   [color.components.page :as color.page]))
 
 ;; ---------- Template
 

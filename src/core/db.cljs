@@ -1,15 +1,17 @@
 (ns core.db
-  (:require [core.config :as config]
-            [core.db.devtools :as db-devtools]
-            [re-frame.core :as re-frame]
-            [re-frame.std-interceptors :refer [debug trim-v]]))
+  "Configuration/customization to re-frame."
+  (:require
+   [core.config :as config]
+   [core.db.devtools :as db-devtools]
+   [re-frame.core :as re-frame]
+   [re-frame.std-interceptors :refer [debug trim-v]]))
 
 (def post-interceptors
   "Required interceptors that must come last."
-  (into [] (concat (when (identical? config/production false)
-                     (when-not db-devtools/available
-                       [debug]))
-                   [trim-v])))
+  (vec (concat (when (identical? config/production false)
+                 (when-not db-devtools/available
+                   [debug]))
+               [trim-v])))
 
 (def pre-interceptors
   "Required interceptors that must come first."
@@ -31,9 +33,9 @@
   ([id handler]
    (reg-event-db id [] handler))
   ([id interceptors handler]
-   (let [interceptors (into [] (concat pre-interceptors
-                                       interceptors
-                                       post-interceptors))]
+   (let [interceptors (vec (concat pre-interceptors
+                                   interceptors
+                                   post-interceptors))]
      (re-frame/reg-event-db id interceptors handler))))
 
 (defn init!

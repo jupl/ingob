@@ -1,8 +1,10 @@
 (ns electron.main
-  (:require [cljs.nodejs :refer [enable-util-print! require]]
-            [core.config :as config]
-            [electron.menu]
-            [electron.window :refer [init-window]]))
+  "Entry point for electron application."
+  (:require
+   [cljs.nodejs :refer [enable-util-print! require]]
+   [core.config :as config]
+   [electron.menu]
+   [electron.window :refer [init-window]]))
 
 (def app
   "Electron application instance."

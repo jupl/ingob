@@ -1,7 +1,9 @@
 (ns color.handler-test
-  (:require [cljs.test :refer-macros [is testing]]
-            [color.handler :as handler]
-            [devcards.core :refer-macros [deftest]]))
+  "Testing/devcards for color re-frame handlers."
+  (:require
+   [cljs.test :refer-macros [is testing]]
+   [color.handler :as handler]
+   [devcards.core :refer-macros [deftest]]))
 
 (deftest previous-color-test
   (testing "known color"

@@ -1,5 +1,7 @@
 (ns core.config
-  (:require [cljs.nodejs :refer [process require]]))
+  "Configuration information used across the project."
+  (:require
+   [cljs.nodejs :refer [process require]]))
 
 ;; If true then application is a production environment
 (goog-define production false)

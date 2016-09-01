@@ -1,7 +1,9 @@
 (ns electron.window
-  (:require [camel-snake-kebab.core :refer [->camelCaseString]]
-            [camel-snake-kebab.extras :refer [transform-keys]]
-            [core.config :as config]))
+  "Clojure friendly way to deal with Electron browser windows."
+  (:require
+   [camel-snake-kebab.core :refer [->camelCaseString]]
+   [camel-snake-kebab.extras :refer [transform-keys]]
+   [core.config :as config]))
 
 (def browser-window
   "Electron browser window class."

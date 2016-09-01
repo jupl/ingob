@@ -24,17 +24,26 @@
  '[pandeiro.boot-http            :refer [serve]]
  '[tolitius.boot-check           :as    check])
 
+;; Required to define custom test task.
 (ns-unmap 'boot.user 'test)
 
-(def closure-opts (atom {:devcards true :output-wrapper :true}))
-(def target-path "target")
+(def closure-opts
+  "Atom containing Closure Compiler options that may vary by build."
+  (atom {:devcards true :output-wrapper :true}))
 
+(def target-path
+  "Default directory for build output."
+  "target")
+
+;; Define default task options used across the board.
 (task-options! reload {:on-jsload 'core.reload/handle}
                serve {:dir target-path}
                target {:dir #{target-path}}
                test-cljs {:js-env :phantom})
 
-(deftask build []
+(deftask build
+  "Produce a production build with optimizations. Devcards is not included."
+  []
   (swap! closure-opts assoc-in [:closure-defines 'core.config/production] true)
   (comp
    (speak)
@@ -51,7 +60,8 @@
    (target)))
 
 (deftask dev
-  [d no-devcards bool "Flag to indicate if devcards should be excluded. Defaults to false."
+  "Run a local server with development tools, live updates, and devcards."
+  [d no-devcards bool "Flag to indicate whether devcards should be excluded."
    p port PORT   int  "The port number to start the server in."]
   (comp
    (serve :port port)
@@ -68,7 +78,9 @@
    (sift :include #{#"\.cljs\.edn$"} :invert true)
    (target)))
 
-(deftask devcards []
+(deftask devcards
+  "Produce a build containing devcards only with optimizations."
+  []
   (comp
    (speak)
    (sift :include #{#"^index"} :invert true)
@@ -77,7 +89,9 @@
    (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
    (target)))
 
-(deftask analyze []
+(deftask analyze
+  "Check and analyze source code."
+  []
   (comp
    (sift :include #{#"\.clj(s|c)$"})
    (check/with-yagni)
@@ -85,7 +99,9 @@
    (check/with-kibit)
    (check/with-bikeshed)))
 
-(deftask test []
+(deftask test
+  "Run all tests once."
+  []
   (comp
    (speak)
    (test-cljs)))

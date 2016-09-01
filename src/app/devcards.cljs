@@ -1,13 +1,13 @@
 (ns app.devcards
-  (:require [app.components.page-test]
-            [color.handler-test]
-            [color.components.page-test]
-            [color.sub-test]
-            [core.db :as db]
-            [devcards.core :refer [start-devcard-ui!]]))
+  "Entry point for devcards application, referencing all devcards."
+  (:require
+   [app.components.page-test]
+   [color.handler-test]
+   [color.components.page-test]
+   [color.sub-test]))
 
 (defn init
   "Configure and bootstrap devcards."
   []
-  (db/init!)
-  (start-devcard-ui!))
+  (core.db/init!)
+  (devcards.core/start-devcard-ui!))

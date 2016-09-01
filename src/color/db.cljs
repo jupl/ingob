@@ -1,9 +1,11 @@
 (ns color.db
-  (:require [core.db :refer [add-init-dispatch! reg-event-db]]
-            [color.handler :as handler]
-            [color.sub :as sub]
-            [re-frame.core :refer [reg-sub]]
-            [re-frame.std-interceptors :refer [path]]))
+  "Set up color query/actions relative to re-frame."
+  (:require
+   [core.db :refer [add-init-dispatch! reg-event-db]]
+   [color.handler :as handler]
+   [color.sub :as sub]
+   [re-frame.core :refer [reg-sub]]
+   [re-frame.std-interceptors :refer [path]]))
 
 ;; Add color subscriptions
 (reg-sub :color sub/color)

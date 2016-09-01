@@ -1,7 +1,9 @@
 (ns core.db.devtools
-  (:require [core.config :as config]
-            [re-frame.core :refer [dispatch reg-event-db reg-sub]]
-            [re-frame.interceptor :refer [->interceptor get-coeffect get-effect]]))
+  "Integration with Redux Devtools for development."
+  (:require
+   [core.config :as config]
+   [re-frame.core :refer [dispatch reg-event-db reg-sub]]
+   [re-frame.interceptor :refer [->interceptor get-coeffect get-effect]]))
 
 ;; May contain Redux Devtools connection.
 (defonce devtools-atom (atom nil))

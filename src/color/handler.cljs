@@ -1,4 +1,5 @@
-(ns color.handler)
+(ns color.handler
+  "re-frame handlers relative to color.")
 
 (def colors
   "List of colors to display."
@@ -17,10 +18,10 @@
   "Update re-frame data with next color in color list."
   [color _]
   (let [index (or (index-of-color color) -1)]
-    (get colors (mod (+ index 1) (count colors)))))
+    (get colors (mod (inc index) (count colors)))))
 
 (defn previous-color
   "Update re-frame data with previous color in color list."
   [color _]
   (let [index (or (index-of-color color) 1)]
-    (get colors (mod (- index 1) (count colors)))))
+    (get colors (mod (dec index) (count colors)))))

@@ -1,14 +1,17 @@
 (ns electron.menu
-  (:require [core.config :as config]
-            [electron.window :refer [init-window]]))
+  "Clojure friendly way to deal with Electron menu."
+  (:require
+   [cljs.nodejs :refer [require]]
+   [core.config :as config]
+   [electron.window :refer [init-window]]))
 
 (def app
   "Electron application instance."
-  (-> "electron" js/require .-app))
+  (-> "electron" require .-app))
 
 (def menu
   "Electron Menu class."
-  (-> "electron" js/require .-Menu))
+  (-> "electron" require .-Menu))
 
 (def menu-template
   "Template to render a menu in Electron."
