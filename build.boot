@@ -1,6 +1,6 @@
 (set-env!
  :source-paths #{"src"}
- :resource-paths #{"resources"}
+ :resource-paths #{"resources/public"}
  :dependencies '[[adzerk/boot-cljs              "1.7.228-1" :scope "test"]
                  [adzerk/boot-reload            "0.4.12"    :scope "test"]
                  [binaryage/devtools            "0.8.1"     :scope "test"]
@@ -27,8 +27,8 @@
 (ns-unmap 'boot.user 'test)
 
 (def closure-opts
-  "Atom containing Closure Compiler options that may vary by build."
-  (atom {:devcards true :output-wrapper :true}))
+  "Common Closure Compiler options for each build."
+  {:devcards true :output-wrapper :true})
 
 (def target-path
   "Default directory for build output."
@@ -43,20 +43,22 @@
 (deftask build
   "Produce a production build with optimizations. Devcards is not included."
   []
-  (swap! closure-opts assoc-in [:closure-defines 'core.config/production] true)
-  (comp
-   (speak)
-   (sift :include #{#"^devcards"} :invert true)
-   (cljs :ids #{"electron"}
-         :optimizations :simple
-         :optimize-constants true
-         :static-fns true
-         :compiler-options @closure-opts)
-   (cljs :ids #{"index"}
-         :optimizations :advanced
-         :compiler-options @closure-opts)
-   (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
-   (target)))
+  (let [prod-closure-opts (assoc-in closure-opts
+                                    [:closure-defines 'core.config/production]
+                                    true)]
+    (comp
+     (speak)
+     (sift :include #{#"^devcards"} :invert true)
+     (cljs :ids #{"electron"}
+           :optimizations :simple
+           :optimize-constants true
+           :static-fns true
+           :compiler-options prod-closure-opts)
+     (cljs :ids #{"index"}
+           :optimizations :advanced
+           :compiler-options prod-closure-opts)
+     (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
+     (target))))
 
 (deftask dev
   "Run a local server with development tools, live updates, and devcards."
@@ -73,7 +75,7 @@
    (cljs-devtools)
    (cljs :source-map true
          :optimizations :none
-         :compiler-options @closure-opts)
+         :compiler-options closure-opts)
    (sift :include #{#"\.cljs\.edn$"} :invert true)
    (target)))
 
@@ -84,7 +86,7 @@
    (speak)
    (sift :include #{#"^index"} :invert true)
    (cljs :optimizations :advanced
-         :compiler-options @closure-opts)
+         :compiler-options closure-opts)
    (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
    (target)))
 
