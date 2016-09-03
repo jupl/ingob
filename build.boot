@@ -8,12 +8,12 @@
                  [crisptrutski/boot-cljs-test   "0.2.1"     :scope "test"]
                  [devcards                      "0.2.1-7"   :scope "test" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [org.clojure/clojure           "1.8.0"     :scope "test"]
-                 [powerlaces/boot-cljs-devtools "0.1.1"     :scope "test"]
+                 [org.clojure/clojurescript     "1.9.216"   :scope "test"]
                  [pandeiro/boot-http            "0.7.3"     :scope "test"]
-                 [tolitius/boot-check           "0.1.3"     :scope "test"]
-                 [org.clojure/clojurescript     "1.9.216"]
-                 [re-frame                      "0.8.0"]
-                 [reagent                       "0.6.0-rc"]])
+                 [powerlaces/boot-cljs-devtools "0.1.1"     :scope "test"]
+                 [re-frame                      "0.8.0"     :scope "test"]
+                 [reagent                       "0.6.0-rc"  :scope "test"]
+                 [tolitius/boot-check           "0.1.3"     :scope "test"]])
 
 (require
  '[adzerk.boot-cljs              :refer [cljs]]

@@ -29,6 +29,6 @@
   []
   (when (identical? config/production false)
     (enable-console-print!)
-    (reload/add-handler #'render))
+    (reload/add-handler render))
   (db/init!)
   (render))
