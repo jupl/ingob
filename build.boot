@@ -1,19 +1,23 @@
 (set-env!
  :source-paths #{"src"}
- :resource-paths #{"resources/public"}
+ :resource-paths #{"resources"}
  :dependencies '[[adzerk/boot-cljs              "1.7.228-1" :scope "test"]
                  [adzerk/boot-reload            "0.4.12"    :scope "test"]
                  [binaryage/devtools            "0.8.1"     :scope "test"]
                  [binaryage/dirac               "0.6.3"     :scope "test"]
                  [crisptrutski/boot-cljs-test   "0.2.1"     :scope "test"]
                  [devcards                      "0.2.1-7"   :scope "test" :exclusions [cljsjs/react cljsjs/react-dom]]
-                 [org.clojure/clojure           "1.8.0"     :scope "test"]
                  [org.clojure/clojurescript     "1.9.216"   :scope "test"]
-                 [pandeiro/boot-http            "0.7.3"     :scope "test"]
                  [powerlaces/boot-cljs-devtools "0.1.1"     :scope "test"]
+                 [pandeiro/boot-http            "0.7.3"     :scope "test"]
                  [re-frame                      "0.8.0"     :scope "test"]
                  [reagent                       "0.6.0-rc"  :scope "test"]
-                 [tolitius/boot-check           "0.1.3"     :scope "test"]])
+                 [tolitius/boot-check           "0.1.3"     :scope "test"]
+                 [compojure                     "1.5.1"]
+                 [hiccup                        "1.0.5"]
+                 [org.clojure/clojure           "1.8.0"]
+                 [org.immutant/immutant         "2.1.5"]
+                 [ring/ring-defaults            "0.2.1"]])
 
 (require
  '[adzerk.boot-cljs              :refer [cljs]]
@@ -35,8 +39,16 @@
   "target")
 
 ;; Define default task options used across the board.
-(task-options! reload {:on-jsload 'core.reload/handle}
-               serve {:dir target-path}
+(task-options! aot {:namespace '#{app.main}}
+               jar {:main 'app.main}
+               pom {:project 'app
+                    :version "0.1.0"}
+               reload {:on-jsload 'core.reload/handle
+                       :asset-path "public"}
+               serve {:dir target-path
+                      :handler 'app.handler/main
+                      :reload true
+                      :httpkit true}
                target {:dir #{target-path}}
                test-cljs {:js-env :phantom})
 
@@ -48,10 +60,16 @@
                                     true)]
     (comp
      (speak)
-     (sift :include #{#"^devcards"} :invert true)
+     (sift :include #{#"^public/devcards"} :invert true)
      (cljs :optimizations :advanced
            :compiler-options prod-closure-opts)
      (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
+     (aot)
+     (pom)
+     (uber)
+     (sift :include #{#"\.clj$"} :invert true)
+     (jar)
+     (sift :include #{#"^project.jar$"})
      (target))))
 
 (deftask dev
@@ -63,7 +81,7 @@
    (watch)
    (speak)
    (if no-devcards
-     (sift :include #{#"^devcards"} :invert true)
+     (sift :include #{#"^public/devcards"} :invert true)
      identity)
    (reload)
    (cljs-devtools)
@@ -78,7 +96,7 @@
   []
   (comp
    (speak)
-   (sift :include #{#"^index"} :invert true)
+   (sift :include #{#"^public/index"} :invert true)
    (cljs :optimizations :advanced
          :compiler-options closure-opts)
    (sift :include #{#"\.out" #"\.cljs\.edn$" #"^\." #"/\."} :invert true)
@@ -88,8 +106,8 @@
   "Check and analyze source code."
   []
   (comp
-   (sift :include #{#"\.clj(s|c)$"})
-   (check/with-yagni)
+   (sift :include #{#"\.clj(s|c)?$"})
+   (check/with-yagni :options {:entry-points ["app.main/-main"]})
    (check/with-eastwood)
    (check/with-kibit)
    (check/with-bikeshed)))

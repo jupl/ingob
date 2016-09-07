@@ -1,6 +1,6 @@
 * Ingob
 ** About
-This is a template for creating and developing ClojureScript applications with [[https://reagent-project.github.io/][Reagent]] and [[https://github.com/Day8/re-frame][re-frame]].
+This is a template for creating and developing ClojureScript applications with [[https://reagent-project.github.io/][Reagent]] and [[https://github.com/Day8/re-frame][re-frame]] with a Clojure server.
 ** Variants
 - [[https://github.com/jupl/ingob][Base]]
 - [[https://github.com/jupl/ingob/tree/electron][Electron]]
@@ -36,8 +36,6 @@ For example, you can run ~boot dev~ to start the development environment. From t
 Start the development server complete with live updates, source maps, REPL, and devcards. If you want to omit devcards use the ~boot -d~ option. To run the server under a different port number use the ~-p~ option. (example to run server in port 8000: ~boot dev -p 8000~)
 *** ~boot build~
 Create a production build with optimizations. Devcard related items are omitted.
-*** ~boot serve build [-p PORT]~
-Create a production build with optimizations, and serve on a static server. Devcard related items are omitted.
 *** ~boot devcards~
 Create a standalone build of devcards only, ready to share.
 *** ~boot test~
