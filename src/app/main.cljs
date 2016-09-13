@@ -1,11 +1,15 @@
 (ns app.main
   "Entry point for main application."
   (:require
-   [app.components.page :as app.page]
-   [core.config :as config]
-   [core.db :as db]
+   [core.config :refer-macros [when-production]]
+   [core.devtools :as devtools]
    [core.reload :as reload]
+   [datascript.core :as datascript]
    [reagent.core :as reagent]))
+
+(def schema
+  "DataScript DB schema for application DB."
+  nil)
 
 (def container-style
   "Style attributes applied to the CLJS application container"
@@ -22,13 +26,13 @@
   (set! js/container.style.cssText nil)
   (doseq [[key val] container-style]
     (aset js/container.style (clj->js key) (clj->js val)))
-  (reagent/render [app.page/component] js/container))
+  (reagent/render [:div "Cool"] js/container))
 
 (defn init
   "Configure and bootstrap the application."
   []
-  (when (identical? config/production false)
-    (enable-console-print!)
-    (reload/add-handler render))
-  (db/init!)
-  (render))
+  (let [connection (datascript/create-conn schema)]
+    (when-production false
+      (enable-console-print!)
+      (reload/add-handler render)
+      (devtools/datascript-connect connection))))
