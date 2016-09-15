@@ -1,18 +1,16 @@
-(ns color.db
-  "Set up color query/actions relative to re-frame."
-  (:require
-   [core.db :refer [add-init-dispatch! reg-event-db]]
-   [color.handler :as handler]
-   [color.sub :as sub]
-   [re-frame.core :refer [reg-sub]]
-   [re-frame.std-interceptors :refer [path]]))
+(ns color.db)
 
-;; Add color subscriptions
-(reg-sub :color sub/color)
+(defn initialize
+  ""
+  [_]
+  (println "INITIALIZE"))
 
-;; Add color action handlers
-(reg-event-db :color-previous [(path :color)] handler/previous-color)
-(reg-event-db :color-next [(path :color)] handler/next-color)
+(defn previous-color
+  ""
+  [_]
+  (println "PREVIOUS COLOR"))
 
-;; Run actions when application starts up
-(add-init-dispatch! [:color-next])
+(defn next-color
+  ""
+  [_]
+  (println "NEXT COLOR"))

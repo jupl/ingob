@@ -1,8 +1,10 @@
 (ns app.main
   "Entry point for main application."
   (:require
+   [color.messenger :as color]
    [core.config :refer-macros [when-production]]
    [core.devtools :as devtools]
+   [core.messenger :as messenger]
    [core.reload :as reload]
    [datascript.core :as datascript]
    [reagent.core :as reagent]))
@@ -31,8 +33,12 @@
 (defn init
   "Configure and bootstrap the application."
   []
-  (let [connection (datascript/create-conn schema)]
+  (let [connection (datascript/create-conn schema)
+        m (messenger/create-messenger)]
     (when-production false
       (enable-console-print!)
       (reload/add-handler render)
-      (devtools/datascript-connect connection))))
+      (devtools/datascript-connect connection))
+    (color/register m connection)
+    (messenger/dispatch m :initialize)
+    (render)))

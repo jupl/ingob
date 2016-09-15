@@ -10,6 +10,7 @@
                  [devcards                      "0.2.1-7"   :scope "test" :exclusions [cljsjs/react cljsjs/react-dom]]
                  [org.clojure/clojure           "1.8.0"     :scope "test"]
                  [org.clojure/clojurescript     "1.9.216"   :scope "test"]
+                 [org.clojure/core.async        "0.2.391"   :scope "test"]
                  [pandeiro/boot-http            "0.7.3"     :scope "test"]
                  [powerlaces/boot-cljs-devtools "0.1.1"     :scope "test"]
                  [reagent                       "0.6.0-rc"  :scope "test"]
