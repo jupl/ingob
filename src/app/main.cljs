@@ -4,14 +4,20 @@
    [color.messenger :as color]
    [core.config :refer-macros [when-production]]
    [core.devtools :as devtools]
-   [core.messenger :as messenger]
+   [core.messenger :refer [create-messenger dispatch]]
    [core.reload :as reload]
-   [datascript.core :as datascript]
+   [datascript.core :refer [create-conn]]
    [reagent.core :as reagent]))
 
 (def schema
   "DataScript DB schema for application DB."
   nil)
+
+;; DataScript instance
+(defonce connection (create-conn schema))
+
+;; Messenger instance
+(defonce messenger (create-messenger))
 
 (def container-style
   "Style attributes applied to the CLJS application container"
@@ -33,12 +39,14 @@
 (defn init
   "Configure and bootstrap the application."
   []
-  (let [connection (datascript/create-conn schema)
-        m (messenger/create-messenger)]
-    (when-production false
-      (enable-console-print!)
-      (reload/add-handler render)
-      (devtools/datascript-connect connection))
-    (color/register m connection)
-    (messenger/dispatch m :initialize)
-    (render)))
+  (when-production false
+    (enable-console-print!)
+    (reload/add-handler render)
+    (devtools/datascript-connect connection))
+
+  ;; Register handlers to messenger
+  (color/register messenger connection)
+
+  ;; Start application
+  (dispatch messenger :initialize)
+  (js/setTimeout render))

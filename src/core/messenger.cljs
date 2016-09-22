@@ -8,9 +8,9 @@
 (defprotocol IMessenger
   ""
   (dispatch [_ type] [_ type payload]
-    "")
+    "Dispatch a message of a type and optional payload.")
   (subscribe [_ type]
-    ""))
+    "Helper that creates a channel set up to subscribe and an unsubscriber."))
 
 (defrecord Messenger [broker publisher]
   IMessenger

@@ -3,14 +3,14 @@
   (:require
    [cljs.core.async :refer [<! alts! timeout]]
    [color.db :as db]
-   [core.messenger :as messenger])
+   [core.messenger :refer [subscribe]])
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]]))
 
 (defn register-previous
   "Hook up to messenger to handle color change to previous."
-  [m connection]
-  (let [[handler] (messenger/subscribe m :color-previous)]
+  [messenger connection]
+  (let [[handler] (subscribe messenger :color-previous)]
     (go-loop []
       (<! handler)
       (db/previous-color connection)
@@ -18,8 +18,8 @@
 
 (defn register-next
   "Hook up to messenger to handle color change to next."
-  [m connection]
-  (let [[handler] (messenger/subscribe m :color-next)]
+  [messenger connection]
+  (let [[handler] (subscribe messenger :color-next)]
     (go-loop []
       (<! handler)
       (db/next-color connection)
@@ -27,11 +27,11 @@
 
 (defn register-auto
   "Hook up to messenger to auto change color until manual change."
-  [m connection]
-  (let [[previous unsubscribe-previous] (messenger/subscribe m :color-previous)
-        [next unsubscribe-next] (messenger/subscribe m :color-next)]
+  [messenger connection]
+  (let [[previous unsubscribe-previous] (subscribe messenger :color-previous)
+        [next unsubscribe-next] (subscribe messenger :color-next)]
     (go-loop []
-      (if (nil? (-> [previous next (timeout 1000)] alts! (get 0)))
+      (if (nil? (-> [previous next (timeout 5000)] alts! (get 0)))
         (do
           (db/next-color connection)
           (recur))
@@ -41,11 +41,11 @@
 
 (defn register
   "Hook up to messenger for color events."
-  [m connection]
-  (let [[handler unsubscribe] (messenger/subscribe m :initialize)]
+  [messenger connection]
+  (let [[handler unsubscribe] (subscribe messenger :initialize)]
     (db/initialize connection)
     (go
       (<! handler)
       (doseq [func [register-previous register-next register-auto]]
-        (func m connection))
+        (func messenger connection))
       (unsubscribe))))
